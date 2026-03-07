@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
         {
           role: "system",
           content:
-            "You are an expert planetary defense scientist who delivers vivid, scientifically grounded asteroid impact assessments in clear flowing prose.",
+            "You are an expert planetary defense scientist who delivers vivid, scientifically grounded asteroid impact assessments in clear flowing prose. Bold key terms and critical figures using markdown (**word**) to emphasize them — such as impact energy, destruction radius, casualty estimates, and threat classifications.",
         },
         {
           role: "user",

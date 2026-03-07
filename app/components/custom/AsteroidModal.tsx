@@ -39,10 +39,18 @@ const THREAT_COLORS: Record<
   },
 };
 
+function renderBold(text: string) {
+  return text.split(/\*\*(.+?)\*\*/g).map((chunk, i) =>
+    i % 2 === 1
+      ? <strong key={i} className="font-semibold text-white">{chunk}</strong>
+      : chunk
+  );
+}
+
 function StatRow({ label, value, valueColor }: { label: string; value: string; valueColor?: string }) {
   return (
     <div className="flex items-center justify-between py-2.5 border-b border-[hsl(220_20%_14%)] last:border-0">
-      <span className="text-xs text-[hsl(215_20%_55%)]">
+      <span className="text-xs text-white">
         {label}
       </span>
       <span
@@ -186,7 +194,7 @@ export default function AsteroidModal({ asteroid, onClose }: AsteroidModalProps)
         {/* ── Close Button ─────────────────────────────────────────────── */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-20 w-9 h-9 rounded-xl flex items-center justify-center bg-[hsl(220_25%_12%)] border border-[hsl(220_20%_20%)] text-[hsl(215_20%_55%)] hover:text-[hsl(210_40%_90%)] hover:border-[hsl(215_20%_35%)] transition-all duration-200"
+          className="absolute top-4 right-4 z-20 w-9 h-9 rounded-xl flex items-center justify-center bg-[hsl(220_25%_12%)] border border-[hsl(220_20%_20%)] text-white hover:text-[hsl(210_40%_90%)] hover:border-[hsl(215_20%_35%)] transition-all duration-200"
           aria-label="Close modal"
         >
           ✕
@@ -315,7 +323,10 @@ export default function AsteroidModal({ asteroid, onClose }: AsteroidModalProps)
             </div>
 
             {/* LLM response area */}
-            <div className="flex-1 flex flex-col px-4 py-4 overflow-y-auto" style={{ maxHeight: "260px" }}>
+            <div
+              className="nova-scrollbar flex-1 flex flex-col px-4 py-4 overflow-y-auto [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-[hsl(260_80%_65%/0.35)] [&::-webkit-scrollbar-thumb:hover]:bg-[hsl(260_80%_65%/0.65)]"
+              style={{ maxHeight: "260px", scrollbarWidth: "thin", scrollbarColor: "hsl(260 80% 65% / 0.35) transparent" }}
+            >
 
               {/* ── Loading skeleton ── */}
               {llmLoading && (
@@ -356,9 +367,9 @@ export default function AsteroidModal({ asteroid, onClose }: AsteroidModalProps)
                   {(llmText ?? "").split(/\n\n+/).filter(Boolean).map((para, i, arr) => (
                     <p
                       key={i}
-                      className="text-[0.8rem] text-[hsl(215_20%_75%)] leading-relaxed"
+                      className="text-md text-white leading-relaxed"
                     >
-                      {para.trim()}
+                      {renderBold(para.trim())}
                       {/* blinking cursor on the last paragraph while streaming */}
                       {llmStreaming && i === arr.length - 1 && (
                         <span
@@ -389,7 +400,7 @@ export default function AsteroidModal({ asteroid, onClose }: AsteroidModalProps)
               className="w-1.5 h-1.5 rounded-full"
               style={{ backgroundColor: colors.bg, boxShadow: `0 0 8px ${colors.glow}` }}
             />
-            <span className="text-[0.65rem] text-[hsl(215_20%_55%)] tracking-[0.05em]">
+            <span className="text-[0.65rem] text-white tracking-[0.05em]">
               Data sourced from{" "}
               <span className="text-[hsl(195_100%_65%)] font-medium">
                 NASA Near-Earth Object Web Service (NeoWs)

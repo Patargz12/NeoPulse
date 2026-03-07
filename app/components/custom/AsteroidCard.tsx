@@ -66,7 +66,7 @@ export default function AsteroidCard({ asteroid, onView }: AsteroidCardProps) {
             <h3 className="font-bold text-lg text-[hsl(210_40%_95%)]">
               {asteroid.name}
             </h3>
-            <p className="text-sm text-[hsl(215_20%_60%)]">
+            <p className="text-sm text-white">
               {asteroid.classification}
             </p>
           </div>
@@ -90,7 +90,7 @@ export default function AsteroidCard({ asteroid, onView }: AsteroidCardProps) {
       <div className="px-5 py-5 space-y-3">
         {/* Diameter */}
         <div className="flex items-center justify-between">
-          <span className="text-xs uppercase text-[hsl(215_20%_60%)]">
+          <span className="text-xs uppercase text-white">
             Diameter
           </span>
           <span className="font-semibold text-sm text-[hsl(210_40%_90%)]">
@@ -100,7 +100,7 @@ export default function AsteroidCard({ asteroid, onView }: AsteroidCardProps) {
 
         {/* Miss Distance */}
         <div className="flex items-center justify-between">
-          <span className="text-xs uppercase text-[hsl(215_20%_60%)]">
+          <span className="text-xs uppercase text-white">
             Miss Dist
           </span>
           <span className="font-semibold text-sm text-[hsl(195_100%_70%)]">
@@ -110,7 +110,7 @@ export default function AsteroidCard({ asteroid, onView }: AsteroidCardProps) {
 
         {/* Velocity */}
         <div className="flex items-center justify-between">
-          <span className="text-xs uppercase text-[hsl(215_20%_60%)]">
+          <span className="text-xs uppercase text-white">
             Velocity
           </span>
           <span className="font-semibold text-sm text-[hsl(210_40%_90%)]">
@@ -120,7 +120,7 @@ export default function AsteroidCard({ asteroid, onView }: AsteroidCardProps) {
 
         {/* First Observed */}
         <div className="flex items-center justify-between">
-          <span className="text-xs uppercase text-[hsl(215_20%_60%)]">
+          <span className="text-xs uppercase text-white">
             First Observed
           </span>
           <span className="font-semibold text-sm text-[hsl(215_20%_70%)]">
@@ -130,7 +130,7 @@ export default function AsteroidCard({ asteroid, onView }: AsteroidCardProps) {
 
         {/* Approach Date */}
         <div className="flex items-center justify-between">
-          <span className="text-xs uppercase text-[hsl(215_20%_60%)]">
+          <span className="text-xs uppercase text-white">
             Approach
           </span>
           <span className="font-semibold text-sm text-[hsl(260_80%_70%)]">
