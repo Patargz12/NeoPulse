@@ -1,10 +1,21 @@
 "use client";
 
+import Image from "next/image";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Preload } from "@react-three/drei";
-import { Suspense, Component, type ReactNode } from "react";
+import { OrbitControls, Preload, useProgress } from "@react-three/drei";
+import { Suspense, Component, useState, useCallback, useEffect, type ReactNode } from "react";
 import { Scene } from "@/app/components/3d/Scene";
 import { fontSpace, CAMERA_CONFIG } from "@/app/constants";
+import EarthLoader from "@/app/components/EarthLoader";
+
+// ─── Scene ready notifier (runs inside Canvas context) ─────────────────────
+function SceneReadyNotifier({ onLoaded }: { onLoaded: () => void }) {
+  const { active, progress } = useProgress();
+  useEffect(() => {
+    if (!active && progress === 100) onLoaded();
+  }, [active, progress, onLoaded]);
+  return null;
+}
 
 // ─── WebGL support check ──────────────────────────────────────────────────────
 function isWebGLAvailable(): boolean {
@@ -48,6 +59,9 @@ function WebGLFallback() {
 
 // ─── PAGE ─────────────────────────────────────────────────────────────────────
 export default function Index() {
+  const [sceneLoaded, setSceneLoaded] = useState(false);
+  const handleLoaded = useCallback(() => setSceneLoaded(true), []);
+
   return (
     <div
       className="relative w-full min-h-screen overflow-hidden flex flex-col items-center pt-20"
@@ -81,7 +95,7 @@ export default function Index() {
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
           }}>
-          NovaWatch
+          NeoPulse
         </h1>
 
         <p
@@ -104,6 +118,7 @@ export default function Index() {
       {/* 3D Canvas */}
       <div style={{ position: "relative", width: "100%", flex: 1, minHeight: 520, maxWidth: 900 }}>
         <div style={{ position: "absolute", inset: 0, pointerEvents: "none", background: "radial-gradient(circle at 50% 50%, hsl(195 100% 60% / 0.15) 0%, transparent 60%)", zIndex: 1 }} />
+        {!sceneLoaded && <EarthLoader message="Loading" />}
         <CanvasErrorBoundary>
           {typeof window !== "undefined" && !isWebGLAvailable() ? (
             <WebGLFallback />
@@ -115,6 +130,7 @@ export default function Index() {
             >
               <Suspense fallback={null}>
                 <Scene />
+                <SceneReadyNotifier onLoaded={handleLoaded} />
                 <OrbitControls
                   enableZoom={false}
                   enablePan={false}
@@ -170,6 +186,111 @@ export default function Index() {
         </div>
       </footer>
 
+      {/* Why Section */}
+      <section className="relative z-10 w-full max-w-[1200px] mx-auto py-16 px-6">
+        {/* Section divider */}
+        <div className="w-full h-px mb-16" style={{ background: "linear-gradient(90deg, transparent, hsl(220 20% 20%), transparent)" }} />
+
+        <div className="text-center mb-12">
+          <div className="mb-2">
+            <span className="text-[0.7rem] tracking-[0.4em] uppercase text-[hsl(195_100%_60%)]" style={{ ...fontSpace }}>
+              ◈ The Stakes ◈
+            </span>
+          </div>
+          <h2
+            className="font-bold leading-[1.2] mb-3 bg-clip-text text-transparent"
+            style={{
+              ...fontSpace,
+              fontSize: "clamp(1.75rem, 4vw, 2.5rem)",
+              background: "linear-gradient(135deg, hsl(195 100% 70%), hsl(210 100% 80%))",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}>
+            WHY THIS EXISTS
+          </h2>
+          <p className="font-light text-white tracking-[0.05em] max-w-[620px] mx-auto"
+            style={{ fontSize: "clamp(0.85rem, 1.5vw, 1rem)" }}>
+            Space is not an abstract threat. It has already hit us — and we were caught off guard.
+          </p>
+        </div>
+
+        {/* Main content: image + text */}
+        <div className="flex flex-col lg:flex-row items-stretch gap-8 mb-12">
+
+          {/* Image grid — 4 real Chelyabinsk/impact photos */}
+          <div className="flex-1 grid grid-cols-2 gap-2">
+            {[
+              { src: "/assets/meteor_images/incident1.jpg", label: "Chelyabinsk fireball, 2013" },
+              { src: "/assets/meteor_images/incident2.jpg", label: "Recovered meteorite fragment" },
+              { src: "/assets/meteor_images/incident3.jpg", label: "Shockwave damage, Chelyabinsk" },
+              { src: "/assets/meteor_images/incident4.jpg", label: "Barringer Crater, Arizona" },
+            ].map((img) => (
+              <div key={img.src} className="relative aspect-square rounded-xl overflow-hidden border border-[hsl(220_20%_16%)] group">
+                <Image
+                  src={img.src}
+                  alt={img.label}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  sizes="(max-width: 1024px) 50vw, 25vw"
+                />
+                {/* Caption on hover */}
+                <div className="absolute inset-x-0 bottom-0 px-3 py-2 translate-y-full group-hover:translate-y-0 transition-transform duration-300"
+                  style={{ background: "linear-gradient(to top, hsl(220 30% 4% / 0.95) 60%, transparent)" }}>
+                  <p className="text-[0.55rem] tracking-[0.1em] uppercase text-[hsl(195_100%_60%)] leading-tight" style={{ ...fontSpace }}>
+                    {img.label}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Text content */}
+          <div className="flex-1 flex flex-col justify-center gap-6">
+            <div className="flex flex-col gap-4">
+              <h3 className="font-bold text-white leading-snug"
+                style={{ ...fontSpace, fontSize: "clamp(1.2rem, 2.5vw, 1.6rem)" }}>
+                One rock.{" "}
+                <span className="bg-clip-text text-transparent"
+                  style={{ background: "linear-gradient(135deg, hsl(195 100% 70%), hsl(210 100% 80%))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                  1,500 people injured.
+                </span>{" "}<br />
+                Zero warning.
+              </h3>
+
+              <p className="text-white text-sm leading-relaxed font-light">
+                On the morning of February 15, 2013, a 20-metre asteroid entered Earth's atmosphere
+                travelling at{" "}
+                <span className="text-[hsl(195_100%_70%)] font-medium">60,000 km/h</span>. It exploded
+                over Chelyabinsk, Russia, releasing energy equivalent to{" "}
+                <span className="text-[hsl(195_100%_70%)] font-medium">30 Hiroshima bombs</span>. Windows
+                shattered across six cities. Over 1,500 people were treated for injuries — mostly
+                from flying glass caused by the shockwave. Not a single alarm was raised before impact.
+              </p>
+
+              <p className="text-white text-sm leading-relaxed font-light">
+                That was a small rock. The one that ended the dinosaurs was{" "}
+                <span className="text-[hsl(195_100%_70%)] font-medium">10 kilometres wide</span>. It struck
+                the Yucatan Peninsula 66 million years ago and wiped out{" "}
+                <span className="bg-clip-text text-transparent font-semibold"
+                  style={{ background: "linear-gradient(135deg, hsl(195 100% 70%), hsl(210 100% 80%))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                  75% of all life on Earth
+                </span>
+                . No species, however advanced, outran it. One impact is all it takes.
+              </p>
+
+              <p className="text-white text-sm leading-relaxed font-light">
+                The difference between us and the dinosaurs is that we have telescopes, data, and
+                the ability to act. NeoPulse exists to make sure that advantage is never wasted —
+                turning raw NASA telemetry into clear, real-time awareness so that{" "}
+                <span className="text-[hsl(195_100%_70%)] font-medium">when the next one comes, we are ready.</span>
+              </p>
+            </div>
+
+       
+          </div>
+        </div>
+      </section>
+
       {/* Features Section */}
       <section className="relative z-10 w-full max-w-[1200px] mx-auto py-16 px-6">
         <div className="text-center mb-12">
@@ -200,38 +321,33 @@ export default function Index() {
             {
               title: "Earth Pulse",
               description: "A real-time health check on Earth's safety. Earth Pulse analyzes nearby asteroid activity and delivers an AI-powered summary of how safe our planet is right now.",
-              icon: "🌍",
-              gradient: "linear-gradient(135deg, hsl(195 100% 60% / 0.15), hsl(210 100% 60% / 0.15))",
+              image: "/assets/features_images/Earth_Pulse.png",
             },
             {
               title: "Impact Oracle",
               description: "Discover what would happen if an asteroid struck Earth. Using real NASA data, Impact Oracle calculates the hypothetical destruction level and paints a vivid picture of the aftermath.",
-              icon: "💥",
-              gradient: "linear-gradient(135deg, hsl(260 80% 65% / 0.15), hsl(280 70% 60% / 0.15))",
+              image: "/assets/features_images/Impact_Analysis.png",
             },
             {
               title: "Stellar Autopsy",
               description: "Dissect any asteroid in detail. Stellar Autopsy examines all available NASA data on a selected object and delivers a complete AI-generated profile of its behavior and risk.",
-              icon: "🔬",
-              gradient: "linear-gradient(135deg, hsl(340 100% 60% / 0.15), hsl(360 80% 65% / 0.15))",
+              image: "/assets/features_images/Asteroid_Analysis.png",
             },
           ].map((feature) => (
             <div
               key={feature.title}
               className="relative bg-[hsl(220_25%_7%)] border border-[hsl(220_20%_14%)] rounded-2xl overflow-hidden transition-all duration-300 ease-in-out cursor-pointer hover:border-[hsl(195_100%_60%_/_0.5)] hover:-translate-y-1"
             >
-              {/* Feature Image Placeholder */}
-              <div 
-                className="relative w-full h-[200px] flex items-center justify-center border-b border-[hsl(220_20%_14%)]"
-                style={{ background: feature.gradient }}>
-                <div className="text-6xl" style={{ filter: "grayscale(20%) brightness(1.1)" }}>
-                  {feature.icon}
-                </div>
-                <div className="absolute top-3 right-3 py-1 px-2.5 rounded-full bg-[hsl(220_25%_7%_/_0.8)] backdrop-blur-sm border border-[hsl(195_100%_60%_/_0.3)]">
-                  <span className="text-[0.55rem] tracking-[0.15em] text-[hsl(195_100%_60%)]" style={{ ...fontSpace }}>
-                    AI POWERED
-                  </span>
-                </div>
+              {/* Feature Image */}
+              <div className="relative w-full h-[200px] border-b border-[hsl(220_20%_14%)]">
+                <Image
+                  src={feature.image}
+                  alt={feature.title}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                />
+        
               </div>
 
               {/* Feature Content */}
@@ -378,28 +494,15 @@ export default function Index() {
         <div className="w-full h-px mb-16" style={{ background: "linear-gradient(90deg, transparent, hsl(220 20% 20%), transparent)" }} />
 
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
-          {/* Image placeholder */}
-          <div className="relative flex-shrink-0 w-full lg:w-[480px] h-[320px] rounded-2xl overflow-hidden border border-[hsl(220_20%_14%)]"
-            style={{ background: "linear-gradient(135deg, hsl(220 25% 7%), hsl(220 30% 10%))" }}>
-            {/* Grid overlay */}
-            <div className="absolute inset-0 opacity-10"
-              style={{
-                backgroundImage: "linear-gradient(hsl(195 100% 60%) 1px, transparent 1px), linear-gradient(90deg, hsl(195 100% 60%) 1px, transparent 1px)",
-                backgroundSize: "40px 40px",
-              }} />
-            {/* Center badge */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
-              <div className="w-16 h-16 rounded-full border-2 border-[hsl(195_100%_60%_/_0.4)] flex items-center justify-center"
-                style={{ background: "radial-gradient(circle at 30% 30%, hsl(195 100% 60% / 0.15), hsl(195 100% 60% / 0.03))" }}>
-                <span className="text-3xl">🛰️</span>
-              </div>
-              <span className="text-[0.6rem] tracking-[0.3em] uppercase text-[hsl(195_100%_60%_/_0.5)]" style={{ ...fontSpace }}>
-                Image Coming Soon
-              </span>
-            </div>
-            {/* Corner accent */}
-            <div className="absolute top-0 left-0 w-16 h-16 border-t-2 border-l-2 border-[hsl(195_100%_60%_/_0.3)] rounded-tl-2xl" />
-            <div className="absolute bottom-0 right-0 w-16 h-16 border-b-2 border-r-2 border-[hsl(195_100%_60%_/_0.3)] rounded-br-2xl" />
+          {/* Data Accuracy Image */}
+          <div className="relative flex-shrink-0 w-full lg:w-[480px] h-[320px] rounded-2xl overflow-hidden border border-[hsl(220_20%_14%)]">
+            <Image
+              src="/data_accuracy.png"
+              alt="Data Accuracy"
+              fill
+              className="object-cover"
+              sizes="(max-width: 1024px) 100vw, 480px"
+            />
           </div>
 
           {/* Text content */}
@@ -424,7 +527,7 @@ export default function Index() {
 
             <p className="font-light text-white leading-[1.8] tracking-[0.02em]"
               style={{ fontSize: "clamp(0.9rem, 1.5vw, 1rem)" }}>
-              Every asteroid, trajectory, and close-approach figure you see on NovaWatch is sourced
+              Every asteroid, trajectory, and close-approach figure you see on NeoPulse is sourced
               directly from{" "}
               <span className="font-semibold text-[hsl(195_100%_70%)]">NASA's Near Earth Object Web Service (NeoWs)</span>
               {" "}— the same authoritative dataset used by planetary scientists worldwide. No
@@ -461,7 +564,7 @@ export default function Index() {
           {/* Brand */}
           <div className="flex flex-col items-center md:items-start gap-1.5">
             <span className="text-sm font-bold tracking-[0.2em] uppercase text-[hsl(195_100%_70%)] font-orbitron">
-              NovaWatch
+              NeoPulse
             </span>
             <span className="text-[0.7rem] text-white tracking-[0.05em]">
               Asteroid monitoring powered by NASA NeoWs
@@ -475,7 +578,7 @@ export default function Index() {
             Data sourced from{" "}
             <span className="text-white">NASA NeoWs</span>.
             <br />
-            For educational purposes only. &copy; {new Date().getFullYear()} NovaWatch.
+            For educational purposes only. &copy; {new Date().getFullYear()} NeoPulse.
           </p>
 
         </div>

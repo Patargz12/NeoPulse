@@ -90,7 +90,7 @@ export default function Navbar() {
                 className="text-2xl font-bold bg-linear-to-r from-cyan-400 via-blue-400 to-purple-500 bg-clip-text text-transparent group-hover:from-cyan-300 group-hover:via-blue-300 group-hover:to-purple-400 transition-all duration-300"
                 style={fontSpace}
               >
-                NovaWatch
+                NeoPulse
               </h1>
               <p className="text-[10px] text-cyan-400/60 tracking-widest" style={fontSpace}>
                 COSMIC OBSERVATORY

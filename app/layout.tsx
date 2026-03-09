@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "NovaWatch",
-  description: "NovaWatch",
+  title: "NeoPulse",
+  description: "NeoPulse",
 };
 
 export default function RootLayout({

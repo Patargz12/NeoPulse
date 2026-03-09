@@ -1,10 +1,10 @@
-# 🌍 NovaWatch
+# 🌍 NeoPulse
 
 **The dinosaurs didn't see it coming. We will.**
 
-NovaWatch is a real-time asteroid detection and monitoring system that provides AI-powered analysis of Near-Earth Objects (NEOs). By leveraging NASA data and advanced visualization techniques, NovaWatch helps track asteroid trajectories, calculate potential impact risks, and assess Earth's current safety status.
+NeoPulse is a real-time asteroid detection and monitoring system that provides AI-powered analysis of Near-Earth Objects (NEOs). By leveraging NASA data and advanced visualization techniques, NeoPulse helps track asteroid trajectories, calculate potential impact risks, and assess Earth's current safety status.
 
-![NovaWatch Banner](https://img.shields.io/badge/Status-Active%20Monitoring-brightgreen) ![Next.js](https://img.shields.io/badge/Next.js-15.0-black) ![Three.js](https://img.shields.io/badge/Three.js-Powered-blue)
+![NeoPulse Banner](https://img.shields.io/badge/Status-Active%20Monitoring-brightgreen) ![Next.js](https://img.shields.io/badge/Next.js-15.0-black) ![Three.js](https://img.shields.io/badge/Three.js-Powered-blue)
 
 ## ✨ Features
 
@@ -80,7 +80,7 @@ Dynamic asteroid visualization with real-time position tracking and threat indic
 
 ## 🌐 API Integration
 
-NovaWatch integrates with NASA's Near-Earth Object Web Service (NeoWs) to fetch:
+NeoPulse integrates with NASA's Near-Earth Object Web Service (NeoWs) to fetch:
 - Real-time asteroid data
 - Orbital parameters
 - Close approach information
@@ -140,4 +140,4 @@ For questions or feedback, please open an issue on GitHub.
 
 ---
 
-**Remember**: The dinosaurs didn't have NovaWatch. You do. 🦕💫
+**Remember**: The dinosaurs didn't have NeoPulse. You do. 🦕💫
