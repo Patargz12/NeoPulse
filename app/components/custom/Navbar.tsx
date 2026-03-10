@@ -40,7 +40,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 border-b transition-all duration-500 ${
+      className={`pointer-events-auto fixed top-0 left-0 right-0 z-50 border-b transition-all duration-500 ${
         scrolled
           ? "bg-black/40 backdrop-blur-xl border-cyan-500/20 shadow-[0_8px_32px_0_rgba(0,221,255,0.15)]"
           : "bg-transparent border-transparent"

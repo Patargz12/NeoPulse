@@ -1,73 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Preload, useProgress } from "@react-three/drei";
-import { Suspense, Component, useState, useCallback, useEffect, type ReactNode } from "react";
-import { Scene } from "@/app/components/3d/Scene";
-import { fontSpace, CAMERA_CONFIG } from "@/app/constants";
-import EarthLoader from "@/app/components/EarthLoader";
-
-// ─── Scene ready notifier (runs inside Canvas context) ─────────────────────
-function SceneReadyNotifier({ onLoaded }: { onLoaded: () => void }) {
-  const { active, progress } = useProgress();
-  useEffect(() => {
-    if (!active && progress === 100) onLoaded();
-  }, [active, progress, onLoaded]);
-  return null;
-}
-
-// ─── WebGL support check ──────────────────────────────────────────────────────
-function isWebGLAvailable(): boolean {
-  try {
-    const canvas = document.createElement("canvas");
-    return !!(
-      window.WebGLRenderingContext &&
-      (canvas.getContext("webgl") || canvas.getContext("experimental-webgl"))
-    );
-  } catch {
-    return false;
-  }
-}
-
-// ─── Error boundary for the Canvas ───────────────────────────────────────────
-interface CanvasBoundaryState { hasError: boolean }
-class CanvasErrorBoundary extends Component<{ children: ReactNode }, CanvasBoundaryState> {
-  state: CanvasBoundaryState = { hasError: false };
-  static getDerivedStateFromError() { return { hasError: true }; }
-  render() {
-    if (this.state.hasError) return <WebGLFallback />;
-    return this.props.children;
-  }
-}
-
-function WebGLFallback() {
-  return (
-    <div
-      className="flex flex-col items-center justify-center w-full h-full gap-3"
-      style={{ minHeight: 520 }}
-    >
-      <div className="text-5xl">🌍</div>
-      <p className="text-white text-sm text-center max-w-xs" style={{ ...fontSpace }}>
-        3D view unavailable — WebGL is disabled in your browser.
-        <br />
-        <span className="text-[hsl(195_100%_60%)]">Enable hardware acceleration</span> in browser settings to see the interactive globe.
-      </p>
-    </div>
-  );
-}
+import { fontSpace } from "@/app/constants";
 
 // ─── PAGE ─────────────────────────────────────────────────────────────────────
 export default function Index() {
-  const [sceneLoaded, setSceneLoaded] = useState(false);
-  const handleLoaded = useCallback(() => setSceneLoaded(true), []);
-
   return (
     <div
-      className="relative w-full min-h-screen overflow-hidden flex flex-col items-center pt-20"
-      style={{
-        background: "radial-gradient(ellipse at center, hsl(220 30% 8%) 0%, hsl(220 30% 2%) 100%)",
-      }}
+      className="relative w-full min-h-screen overflow-hidden flex flex-col items-center pt-20 pointer-events-none"
     >
       {/* Background nebula blobs */}
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
@@ -78,7 +18,7 @@ export default function Index() {
       </div>
 
       {/* Header */}
-      <header className="relative z-10 text-center pt-10 px-4 pb-4">
+      <header className="relative z-10 text-center pt-10 px-4 pb-4 pointer-events-auto">
         <div className="mb-2">
           <span className="text-[0.7rem] tracking-[0.4em] uppercase text-[hsl(195_100%_60%)]" style={{ ...fontSpace }}>
             ◈ Introducing ◈
@@ -115,38 +55,15 @@ export default function Index() {
 
       </header>
 
-      {/* 3D Canvas */}
-      <div style={{ position: "relative", width: "100%", flex: 1, minHeight: 520, maxWidth: 900 }}>
-        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", background: "radial-gradient(circle at 50% 50%, hsl(195 100% 60% / 0.15) 0%, transparent 60%)", zIndex: 1 }} />
-        {!sceneLoaded && <EarthLoader message="Loading" />}
-        <CanvasErrorBoundary>
-          {typeof window !== "undefined" && !isWebGLAvailable() ? (
-            <WebGLFallback />
-          ) : (
-            <Canvas
-              style={{ position: "absolute", inset: 0, zIndex: 2 }}
-              camera={{ position: CAMERA_CONFIG.position, fov: CAMERA_CONFIG.fov }}
-              gl={{ antialias: true, alpha: true, failIfMajorPerformanceCaveat: false }}
-            >
-              <Suspense fallback={null}>
-                <Scene />
-                <SceneReadyNotifier onLoaded={handleLoaded} />
-                <OrbitControls
-                  enableZoom={false}
-                  enablePan={false}
-                  autoRotate={false}
-                  dampingFactor={0.08}
-                  enableDamping
-                />
-                <Preload all />
-              </Suspense>
-            </Canvas>
-          )}
-        </CanvasErrorBoundary>
-      </div>
+      {/* Canvas viewport — EarthCanvas is mounted at root layout (PersistentEarthCanvas).
+          This spacer preserves the vertical space in the page flow. */}
+      <div
+        aria-hidden="true"
+        style={{ width: "100%", flex: 1, minHeight: 520, maxWidth: 900, pointerEvents: "none" }}
+      />
 
       {/* Stats bar */}
-      <footer className="relative z-10 w-full max-w-[672px] mx-auto px-6 pb-8 pt-2 flex justify-center">
+      <footer className="relative z-10 w-full max-w-[672px] mx-auto px-6 pb-8 pt-2 flex justify-center pointer-events-auto">
         <div className="flex items-stretch gap-3 bg-[hsl(220_25%_7%)] border border-[hsl(220_20%_20%)] rounded-2xl p-1.5 shadow-[0_4px_20px_hsl(220_30%_5%_/_0.5),inset_0_1px_0_hsl(195_100%_60%_/_0.1)]">
           {/* Earth Pulse Status */}
           <div className="flex items-center gap-3 bg-[hsl(220_25%_10%)] border border-[hsl(220_20%_18%)] rounded-xl py-5 px-6 min-w-[200px]">
@@ -187,7 +104,7 @@ export default function Index() {
       </footer>
 
       {/* Why Section */}
-      <section className="relative z-10 w-full max-w-[1200px] mx-auto py-16 px-6">
+      <section className="relative z-10 w-full max-w-[1200px] mx-auto py-16 px-6 pointer-events-auto">
         {/* Section divider */}
         <div className="w-full h-px mb-16" style={{ background: "linear-gradient(90deg, transparent, hsl(220 20% 20%), transparent)" }} />
 
@@ -292,7 +209,7 @@ export default function Index() {
       </section>
 
       {/* Features Section */}
-      <section className="relative z-10 w-full max-w-[1200px] mx-auto py-16 px-6">
+      <section className="relative z-10 w-full max-w-[1200px] mx-auto py-16 px-6 pointer-events-auto">
         <div className="text-center mb-12">
           <div className="mb-2">
             <span className="text-[0.7rem] tracking-[0.4em] uppercase text-[hsl(195_100%_60%)]" style={{ ...fontSpace }}>
@@ -374,7 +291,7 @@ export default function Index() {
       </section>
 
       {/* How It Works Section */}
-      <section className="relative z-10 w-full max-w-[1200px] mx-auto py-16 px-6">
+      <section className="relative z-10 w-full max-w-[1200px] mx-auto py-16 px-6 pointer-events-auto">
         {/* Section divider */}
         <div className="w-full h-px mb-16" style={{ background: "linear-gradient(90deg, transparent, hsl(220 20% 20%), transparent)" }} />
 
@@ -489,7 +406,7 @@ export default function Index() {
       </section>
 
       {/* Data Accuracy Section */}
-      <section className="relative z-10 w-full max-w-[1200px] mx-auto py-16 px-6">
+      <section className="relative z-10 w-full max-w-[1200px] mx-auto py-16 px-6 pointer-events-auto">
         {/* Section divider */}
         <div className="w-full h-px mb-16" style={{ background: "linear-gradient(90deg, transparent, hsl(220 20% 20%), transparent)" }} />
 
@@ -558,7 +475,7 @@ export default function Index() {
       </section>
 
       {/* Footer */}
-      <footer className="relative z-10 w-full border-t border-[hsl(220_20%_14%)] mt-8">
+      <footer className="relative z-10 w-full border-t border-[hsl(220_20%_14%)] mt-8 pointer-events-auto">
         <div className="max-w-[1200px] mx-auto px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-6">
 
           {/* Brand */}

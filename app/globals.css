@@ -190,3 +190,8 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Override Tailwind's white --background on body; un-layered CSS wins over @layer base */
+body {
+  background: radial-gradient(ellipse at center, hsl(220 30% 8%) 0%, hsl(220 30% 2%) 100%);
+}
