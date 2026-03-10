@@ -16,3 +16,4 @@ export function ContentWrapper({ children }: { children: ReactNode }) {
     </div>
   );
 }
+

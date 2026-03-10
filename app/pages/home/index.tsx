@@ -125,9 +125,9 @@ export default function Index() {
             }}>
             WHY THIS EXISTS
           </h2>
-          <p className="font-light text-white tracking-[0.05em] max-w-[620px] mx-auto"
-            style={{ fontSize: "clamp(0.85rem, 1.5vw, 1rem)" }}>
-            Space is not an abstract threat. It has already hit us — and we were caught off guard.
+          <p className=" text-white tracking-[0.05em] max-w-[620px] mx-auto"
+            >
+            We are one rock away from extinction. The dinosaurs had no warning. We do.
           </p>
         </div>
 
@@ -174,7 +174,7 @@ export default function Index() {
                 Zero warning.
               </h3>
 
-              <p className="text-white text-sm leading-relaxed font-light">
+              <p className="text-white text-sm ">
                 On the morning of February 15, 2013, a 20-metre asteroid entered Earth's atmosphere
                 travelling at{" "}
                 <span className="text-[hsl(195_100%_70%)] font-medium">60,000 km/h</span>. It exploded
@@ -184,7 +184,7 @@ export default function Index() {
                 from flying glass caused by the shockwave. Not a single alarm was raised before impact.
               </p>
 
-              <p className="text-white text-sm leading-relaxed font-light">
+              <p className="text-white text-sm ">
                 That was a small rock. The one that ended the dinosaurs was{" "}
                 <span className="text-[hsl(195_100%_70%)] font-medium">10 kilometres wide</span>. It struck
                 the Yucatan Peninsula 66 million years ago and wiped out{" "}
@@ -195,7 +195,7 @@ export default function Index() {
                 . No species, however advanced, outran it. One impact is all it takes.
               </p>
 
-              <p className="text-white text-sm leading-relaxed font-light">
+              <p className="text-white text-sm">
                 The difference between us and the dinosaurs is that we have telescopes, data, and
                 the ability to act. NeoPulse exists to make sure that advantage is never wasted —
                 turning raw NASA telemetry into clear, real-time awareness so that{" "}
@@ -203,8 +203,24 @@ export default function Index() {
               </p>
             </div>
 
-       
           </div>
+        </div>
+
+        {/* Closing statement */}
+        <div className="mt-12 w-full flex justify-center">
+          <p
+            className="text-center font-semibold tracking-[0.06em] bg-clip-text text-transparent"
+            style={{
+              fontSize: "clamp(1.1rem, 2.5vw, 1.5rem)",
+              background: "linear-gradient(135deg, hsl(195 100% 70%), hsl(210 100% 80%), hsl(260 80% 75%))",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              textShadow: "none",
+              ...fontSpace,
+            }}
+          >
+            Somewhere out there, a rock with no name is deciding our future.
+          </p>
         </div>
       </section>
 
@@ -227,8 +243,8 @@ export default function Index() {
             }}>
             CORE FEATURES
           </h2>
-          <p className="font-light text-white tracking-[0.05em] max-w-[600px] mx-auto" 
-            style={{ fontSize: "clamp(0.85rem, 1.5vw, 1rem)" }}>
+          <p className="text-white tracking-[0.05em] max-w-[600px] mx-auto" 
+           >
             AI-powered analysis tools to monitor, predict, and understand asteroid threats
           </p>
         </div>
@@ -313,9 +329,9 @@ export default function Index() {
             }}>
             HOW IT WORKS
           </h2>
-          <p className="font-light text-[hsl(215_20%_65%)] tracking-[0.05em] max-w-[520px] mx-auto"
-            style={{ fontSize: "clamp(0.85rem, 1.5vw, 1rem)" }}>
-            From raw satellite telemetry to actionable insights — in three steps.
+          <p className=" text-white tracking-[0.05em] max-w-[520px] mx-auto">
+      
+            From raw satellite telemetry to actionable insights  in three steps.
           </p>
         </div>
 

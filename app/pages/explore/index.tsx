@@ -183,7 +183,7 @@ export default function ExplorePage() {
         </h1>
 
         <p
-          className="font-light text-[hsl(215_20%_55%)] tracking-[0.05em] max-w-[700px] mx-auto"
+          className="font-light text-white tracking-[0.05em] max-w-[700px] mx-auto"
           style={{ fontSize: "clamp(0.85rem, 1.5vw, 1rem)" }}
         >
           Discover and analyze Near-Earth Objects tracked by NASA. Each asteroid represents a
@@ -391,7 +391,7 @@ export default function ExplorePage() {
           >
             NASA Near-Earth Object Database
           </h3>
-          <p className="font-light text-[hsl(215_20%_65%)] text-[0.9rem] leading-[1.6] tracking-[0.02em] max-w-[700px] mx-auto">
+          <p className="font-light text-white text-[0.9rem] leading-[1.6] tracking-[0.02em] max-w-[700px] mx-auto">
             All asteroid data is sourced live from NASA&apos;s Near-Earth Object Web Service (NeoWs).
             Displaying tracked close-approach objects for the next 7 days, sorted by miss distance.
             Orbital classification is approximated from approach geometry.

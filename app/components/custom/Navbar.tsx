@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { fontSpace } from "@/app/constants";
 
 interface NavLink {
@@ -13,8 +13,6 @@ interface NavLink {
 const navLinks: NavLink[] = [
   { name: "Home", href: "/" },
   { name: "Explore", href: "/explore" },
-  { name: "Tracking", href: "/tracking" },
-  { name: "About", href: "/about" },
 ];
 
 // Pre-computed star particles to avoid Math.random() during render
@@ -29,6 +27,7 @@ const starParticles = Array.from({ length: 12 }, (_, i) => ({
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -132,6 +131,7 @@ export default function Navbar() {
 
           {/* CTA Button */}
           <button
+            onClick={() => router.push("/chat")}
             className="relative hidden md:flex items-center px-6 py-2.5 text-sm font-semibold overflow-hidden group"
             style={fontSpace}
           >
@@ -147,7 +147,7 @@ export default function Navbar() {
             
             {/* Button text */}
             <span className="relative text-cyan-400 group-hover:text-white transition-colors duration-300 flex items-center gap-2">
-              <span>Launch</span>
+              <span>Ask</span>
               <svg
                 className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300"
                 fill="none"
