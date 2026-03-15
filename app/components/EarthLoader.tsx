@@ -1,38 +1,6 @@
 import React from "react";
 
-interface PlanetLoaderProps {
-  message?: string;
-}
-
-function PlanetLoader({ message = "Loading" }: PlanetLoaderProps) {
-  const [dots, setDots] = React.useState("");
-  const [increasing, setIncreasing] = React.useState(true);
-
-  React.useEffect(() => {
-    // Animate dots: "" -> "." -> ".." -> "..." -> ".." -> "." -> "" (cycle)
-    const interval = setInterval(() => {
-      setDots((prev) => {
-        if (increasing) {
-          if (prev === "") return ".";
-          if (prev === ".") return "..";
-          if (prev === "..") {
-            setIncreasing(false);
-            return "...";
-          }
-        } else {
-          if (prev === "...") return "..";
-          if (prev === "..") return ".";
-          if (prev === ".") {
-            setIncreasing(true);
-            return "";
-          }
-        }
-        return prev;
-      });
-    }, 400);
-
-    return () => clearInterval(interval);
-  }, [increasing]);
+function PlanetLoader() {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center overflow-hidden z-50" style={{
@@ -72,16 +40,6 @@ function PlanetLoader({ message = "Loading" }: PlanetLoaderProps) {
           </div>
         </div>
 
-        {/* Loading text */}
-        <div className="text-center mt-8">
-          <div className="text-gray-200 text-2xl font-medium" style={{
-            fontFamily: "'Orbitron', monospace",
-            letterSpacing: "0.1em",
-            minHeight: "2rem"
-          }}>
-            {message}{dots}
-          </div>
-        </div>
       </div>
     </div>
   );

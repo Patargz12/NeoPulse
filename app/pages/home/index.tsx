@@ -257,13 +257,13 @@ export default function Index() {
               image: "/assets/features_images/Earth_Pulse.png",
             },
             {
-              title: "Impact Oracle",
-              description: "Discover what would happen if an asteroid struck Earth. Using real NASA data, Impact Oracle calculates the hypothetical destruction level and paints a vivid picture of the aftermath.",
+              title: "Impact Analysis",
+              description: "Discover what would happen if an asteroid struck Earth. Using real NASA data, Impact Analysis calculates the hypothetical destruction level and paints a vivid picture of the aftermath.",
               image: "/assets/features_images/Impact_Analysis.png",
             },
             {
-              title: "Stellar Autopsy",
-              description: "Dissect any asteroid in detail. Stellar Autopsy examines all available NASA data on a selected object and delivers a complete AI-generated profile of its behavior and risk.",
+              title: "Asteroid Autopsy",
+              description: "Dissect any asteroid in detail. Asteroid Autopsy examines all available NASA data on a selected object and delivers a complete AI-generated profile of its behavior and risk.",
               image: "/assets/features_images/Asteroid_Analysis.png",
             },
           ].map((feature) => (
@@ -291,10 +291,7 @@ export default function Index() {
                 <p className="font-light text-white text-sm ">
                   {feature.description}
                 </p>
-                <div className="mt-5 flex items-center gap-2 text-[hsl(195_100%_60%)] text-xs tracking-[0.1em] uppercase" style={{ ...fontSpace }}>
-                  <span>Explore Feature</span>
-                  <span className="text-[0.6rem]">→</span>
-                </div>
+
               </div>
 
               {/* Subtle glow effect */}
@@ -399,7 +396,7 @@ export default function Index() {
                     style={{ ...fontSpace, fontSize: "clamp(0.9rem, 1.5vw, 1rem)", color: item.accent }}>
                     {item.title}
                   </h3>
-                  <p className="font-light text-white leading-[1.7] tracking-[0.02em] text-[0.875rem]">
+                  <p className="font-regular text-white text-[0.875rem]">
                     {item.description}
                   </p>
                 </div>
@@ -458,7 +455,7 @@ export default function Index() {
               DATA ACCURACY
             </h2>
 
-            <p className="font-light text-white leading-[1.8] tracking-[0.02em]"
+            <p className="font-regular text-white"
               style={{ fontSize: "clamp(0.9rem, 1.5vw, 1rem)" }}>
               Every asteroid, trajectory, and close-approach figure you see on NeoPulse is sourced
               directly from{" "}
@@ -467,7 +464,7 @@ export default function Index() {
               estimates, no guesswork.
             </p>
 
-            <p className="font-light text-white leading-[1.8] tracking-[0.02em]"
+            <p className="font-regular text-white"
               style={{ fontSize: "clamp(0.85rem, 1.4vw, 0.95rem)" }}>
               When it comes to planetary defense, precision isn't optional. You can rest assured
               that the data powering every alert, analysis, and prediction here is as accurate as
